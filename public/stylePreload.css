@@ -1,0 +1,32 @@
+html,body{
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial';
+  color:black;
+  text-align:center;
+  /* background-color: black; */
+  /* background-image: url("bgIMG.jpeg");
+  background-repeat: repeat-x; */
+}
+
+h1{
+  font-size: 60px;
+  margin: 20px;
+  position: relative;
+}
+
+.detail p{
+  padding: 1em;
+  position: relative;
+  top: 50%;
+  font-size:16px;
+  /* margin-top: 500px; */
+}
+canvas{
+  margin-top:100px;
+}
+
+/* .mask {
+  -webkit-mask-image: url('https://cdn.glitch.com/04eadd2b-7dd4-43fc-af3d-cff948811986%2Fstar-mask-gradient.png?v=1597757011489');
+  mask-image: url('/image/Figure.png');
+} */
