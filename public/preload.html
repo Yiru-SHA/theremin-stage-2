@@ -17,14 +17,21 @@
         </h1>
 
         <section class = "detail">
-            <p>
-                your body is the music instrument.
+            <p id="info">
+                Your palms are the music instrument.
                 <br>
-                Turn on camera and use your hand.
+                Turn on camera and move your palms horizentally.
                 <br>
-                Keep distance with camera, match palms into blue circles.
+            </p>
+            <button id="poseReady">Click if page don't work</button>
+        </section>
+        <section class = "footNote">
+            <p>This web is for music performance of nature sound.
+                <br>
+                Designed by Enrique & Yiru. IMA LowRes 2020.
             </p>
         </section>
+
     </div>
 
     <script type="text/javascript" src="https://p5livemedia.itp.io/simplepeer.min.js"></script>
@@ -32,6 +39,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script>
     <script type="text/javascript" src="https://p5livemedia.itp.io/p5livemedia.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <!-- <script src="path/to/p5.sound.js"></script> -->
     <!-- Include the ml5 library in the program. -->
     <script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js"></script>

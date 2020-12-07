@@ -1,32 +1,53 @@
-html,body{
+body{
   margin: 0;
   padding: 0;
   font-family: 'Arial';
   color:black;
   text-align:center;
-  /* background-color: black; */
-  /* background-image: url("bgIMG.jpeg");
-  background-repeat: repeat-x; */
+  background-image: url("/image/bg002.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: black;
 }
 
 h1{
-  font-size: 60px;
+  font-size: 68px;
   margin: 20px;
   position: relative;
 }
 
 .detail p{
-  padding: 1em;
+
+  display: table; /* keep the background color wrapped tight */
+  margin: 0px auto 0px auto; /* keep the table centered */
+  padding:1em;font-size:20px;background-color:rgb(11, 85, 243);color:#ffffff;
+
   position: relative;
   top: 50%;
-  font-size:16px;
   /* margin-top: 500px; */
 }
-canvas{
-  margin-top:100px;
+
+#poseReady{
+  display: table; /* keep the background color wrapped tight */
+  margin: 0px auto 0px auto; /* keep the table centered */   
+  background-color: rgb(11, 85, 243);
+  color: white;
+  padding: 5px;
+  border: none;
+  font-size: 16px;
+  margin-top:515px;
+}
+#poseReady:hover{
+  background:black;
 }
 
-/* .mask {
-  -webkit-mask-image: url('https://cdn.glitch.com/04eadd2b-7dd4-43fc-af3d-cff948811986%2Fstar-mask-gradient.png?v=1597757011489');
-  mask-image: url('/image/Figure.png');
-} */
+.footNote{
+  color:white;
+  font-size: 14px;
+  margin-top: 230px;
+    
+}
+canvas{
+  margin-top:120px;
+}
+

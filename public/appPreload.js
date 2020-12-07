@@ -1,4 +1,4 @@
-console.log("connected!")
+//console.log("connected!")
 
 //load camera
 let myVideo;
@@ -11,6 +11,8 @@ let video
 let w;
 let noseX;
 let noseY;
+let counter = 0;
+
 
 function setup() {
     myCanvas = createCanvas(640, 480);
@@ -25,8 +27,8 @@ function setup() {
 
     //let ssp = new SimpleSimplePeer(this,"CANVAS",myCanvas);
     // Work-around a bug introduced by using the editor.p5js.org and iFrames.  Hardcoding the room name.
-    let p5l = new p5LiveMedia(this, "CANVAS", myCanvas, "p5LiveMediaPeerTestFun");
-    p5l.on('stream', gotStream);
+    // let p5l = new p5LiveMedia(this, "CANVAS", myCanvas, "p5LiveMediaPeerTestFun");
+    // p5l.on('stream', gotStream);
 }
 
 function gotPoses(poses) {
@@ -92,16 +94,22 @@ function draw() {
 
     //ellipse(mouseX, mouseY, 50, 50);
     ellipseMode(RADIUS);
-    stroke(0,255,255);
+    stroke(11, 85, 243);
     strokeWeight(5);
     noFill();
     ellipse(width / 2, (height / 2) - 30, 80, 100);
 
     //leftWrist
-    ellipse(width/4,height/4*3,50,50);
-    ellipse(width/4*3,height/4*3,50,50);
-
+    ellipse(width / 4, height / 4 * 3, 50, 50);
     //RightWrist
+    ellipse(width / 4 * 3, height / 4 * 3, 50, 50);
+
+    textSize(24);
+            noStroke();
+            fill(11, 85, 243);
+            text('Face', 300, height / 5 *3.65);
+            text('Left Palm', 100, height/6*5.5);
+            text('Right Palm', width-200, height/6*5.5);
 
     //poseNET
     if (pose) {
@@ -118,30 +126,68 @@ function draw() {
         fill('red')
         circle(width - leftWristX, leftWristY, 20);
         circle(width - rightWristX, rightWristY, 20);
-        
 
-        fill('blue');
-        circle(100,300,20)
-        
-        let d = dist(leftWristX, leftWristY, width-100,300);
-        console.log(leftWristX,leftWristY);
+    }
+    //RightDistanceCheck();
+    // LeftDistanceCheck();
+    if (LeftDistanceCheck()) {
+        if (RightDistanceCheck()){
+            
+            fill(11, 85, 243);
+            text('Ready go to next page!',200,100);
+           // console.log("Ready for next page")
+            setTimeout(timeIt ,5000);
+            
+            // if(timeIt=="10"){
+            // console.log("timer",counter);
+            // location.replace("/index.html")
+            // }
+        }
+    }
+}
 
-        if(d<100){
-            console.log("checkdistance!!")
+function LeftDistanceCheck() {
+    if (pose) {
+        let leftWristX = pose.keypoints[9].position.x;
+        let leftWristY = pose.keypoints[9].position.y;
+
+        let d = dist(leftWristX, leftWristY, width - 100, 300);
+       // console.log("left x", leftWristX);
+
+        if (d < 100) {
+            console.log("Left checkdistance!!")
             return true;
         }
         //console.log(d);
     }
-
 }
 
-// function distanceCheck(){
-   
+function RightDistanceCheck() {
+    if (pose) {
+
+        let rightWristX = pose.keypoints[10].position.x;
+        let rightWristY = pose.keypoints[10].position.y;
+
+        let d = dist(rightWristX, rightWristY, 100, 300);
+        //console.log("right", rightWristX, rightWristY);
+
+        if (d < 100) {
+            console.log("Right checkdistance!!")
+            return true;
+        }
+        //console.log(d);
+    }
+}
+
+
+function timeIt() {
+    //replace
+    location.replace("/index.html")
+}
+
+// function gotStream(stream) {
+//     // This is just like a video/stream from createCapture(VIDEO)
+//     otherVideo = stream;
+//     //otherVideo.id is the unique identifier for this peer
+//     //otherVideo.hide();
 // }
-
-function gotStream(stream) {
-    // This is just like a video/stream from createCapture(VIDEO)
-    otherVideo = stream;
-    //otherVideo.id is the unique identifier for this peer
-    //otherVideo.hide();
-}
