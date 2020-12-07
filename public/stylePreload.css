@@ -4,7 +4,7 @@ body{
   font-family: 'Arial';
   color:black;
   text-align:center;
-  background-image: url("/image/bg002.jpg");
+  background-image: url("/data/bg002.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-color: black;

@@ -5,7 +5,7 @@ body{
     color:black;
     text-align:center;
     /* background-color: black; */
-    background-image: url("/image/bg003.jpg");
+    background-image: url("/data/bg003.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-color: black;

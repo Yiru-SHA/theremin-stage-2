@@ -48,7 +48,7 @@ let rightPoseY;
 //let StringRect = []
 
 function setup() {
-    myCanvas = createCanvas(960, 720);
+    myCanvas = createCanvas(720, 553);
     console.log(width);
     myVideo = createCapture(VIDEO);
     //300
@@ -107,6 +107,7 @@ function modelLoaded() {
     // set only after the poses are available.  
     // osc.start();
     osc.amp(1);
+    bGmusic();
 }
 
 function draw() {
@@ -143,9 +144,9 @@ function draw() {
 
     //instruction for left hand;
     if(pose){
-    textSize(16);
-            fill(11, 85, 243);
-            text('Lefthand: volume up and down',30,50);
+    textSize(14);
+            fill('white');
+            text('Left hand: volume up and down',30,30);
     }
     PoseCheck();
     PlaybyPose();
@@ -235,4 +236,14 @@ function gotStream(stream) {
     otherVideo = stream;
     //otherVideo.id is the unique identifier for this peer
     //otherVideo.hide();
+}
+function bGmusic(){
+    //amplify 扩音器，调节音量
+    bgGain = new Tone.Gain(0.3).toMaster();
+
+    //背景音乐，connect with amplify
+    bgPlayer = new Tone.Player("data/rain-on-the-roof.mp3").connect(bgGain);
+    // play as soon as the buffer is loaded
+    bgPlayer.autostart = true;
+    bgPlayer.loop = true;
 }
