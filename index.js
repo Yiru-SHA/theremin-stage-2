@@ -11,9 +11,13 @@ server.listen(port, () => {
     console.log("Server listening at port: " + port);
 });
 
-// 1.x.x socket version, npm: let io = require('socket.io').listen(server);
-// 0.9.x socket version npm: let io = require('socket.io')(server)
+
+// initialize socket.io
 let io = require('socket.io')().listen(server);
+
+let counter = 0;
+//let idIndex = [];
+
 
 io.sockets.on('connection', function(socket) {
     console.log("We have a new client: " + socket.id);
@@ -26,11 +30,22 @@ io.sockets.on('connection', function(socket) {
         io.sockets.emit(disconnectUser);
     })
 
-    // socket.on('joined',(data)=>{
-    //    console.log("ready to emit")
+    socket.on('joined',()=>{
+        counter++;
+        let idIndex = {
+            "UserID" : socket.id,
+            "UserJoined":counter
+    }
+        io.sockets.emit('joined',(idIndex));
+        console.log(idIndex);
+    });
 
-    // })
-
+    socket.on('WristData',(data)=>{
+        console.log("one client",data);
+        //idIndex.push(data.idIndex);
+        io.sockets.emit('AllWristData',(data));
+        console.log("sendout all wristdata",data);
+    })
 
 });
 

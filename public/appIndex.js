@@ -7,9 +7,19 @@ socket.on('connect', function () {
     socket.emit('joined');
 });
 
-// socket.on('joined', function(data){
-//     console.log("get Data");
-// })
+//Listen for confirmation of connection
+socket.on('joined', function (data) {
+    console.log("get info" + data.UserJoined);
+});
+
+//second player:
+let musics = {
+    "noteA": [
+        "/data/tibetan-singing-bowl.mp3",
+        //g，a,b,c,d,e,f#,g. 
+    ]
+}
+
 
 /* -----P5 setup----- */
 // Make sure you move your mouse around
@@ -17,6 +27,8 @@ socket.on('connect', function () {
 
 let myVideo;
 let otherVideo;
+//set id as object
+let otherVideos = {};
 let myCanvas;
 let poses = [];
 //Code by Mister Bomb
@@ -70,7 +82,17 @@ function setup() {
     // Work-around a bug introduced by using the editor.p5js.org and iFrames.  Hardcoding the room name.
     let p5l = new p5LiveMedia(this, "CANVAS", myCanvas, "p5LiveMediaPeerTestFun");
     p5l.on('stream', gotStream);
+
+    //Lister server pose position
+    // once I got the position, I need to go to posePlay to generate new sound?
+    socket.on('AllWristData', (newPosition) => {
+        //new function for play new sound based on new pose data
+        newPlaybyPose(newPosition);
+        console.log("get data",newPosition)
+    })
 }
+
+
 
 function gotPoses(results) {
     poses = results;
@@ -98,6 +120,21 @@ function gotPoses(results) {
         rightWristY = rightPoseY;
         //console.log("left", leftWristY);
     }
+
+    if (pose) {
+
+        if ((leftWrist.score > 0.4) && (rightWrist.score > 0.4)) {
+            let data = {
+                LeftX: leftWristX,
+                LeftY: leftWristY,
+                RightX: rightWristX,
+                RightY: rightWristY
+            }
+            socket.emit('WristData', data)
+            console.log("data send!!!")
+        }
+    }
+
 }
 
 function modelLoaded() {
@@ -110,9 +147,13 @@ function modelLoaded() {
     bGmusic();
 }
 
+//get data from server
+// socket.on('',()=>{
+
+// })
+
 function draw() {
     background(220);
-    
 
     //mirror the camera
     push();
@@ -143,21 +184,48 @@ function draw() {
     updatePixels();
 
     //instruction for left hand;
-    if(pose){
-    textSize(14);
-            fill('white');
-            text('Left hand: volume up and down',30,30);
+    if (pose) {
+        textSize(14);
+        fill('white');
+        text('Left hand: volume up and down', 30, 30);
     }
     PoseCheck();
     PlaybyPose();
 }
+
+//use new server position data to play music
+// function newPosePlay(pos){
+
+//         // pos.leftX
+//         // pos.leftY
+//         // pos.RightX
+//         // pos.RightY
+
+//         let n = floor(map(pos.RightX, 0, width, 0, 8));
+//         let amp = map(pos.leftX, 0, height, 1, 0);
+
+//         if (rightWristX > 0 && rightWristX < width) {
+//             // //console.log(n);
+//             osc.freq(midiToFreq(notes[n]));
+//         }
+//         // //amp(vol,[rampTime],[timeFromNow])fade out
+//         if (leftWristY > 0 && leftWristY < height) {
+//             osc.amp(amp, 0.1);
+//         }
+//         //osc.amp(amp);    
+//         else if (!poseChecked) {
+//             // stop sound when pose out of screen
+//             osc.amp(0);
+//             //console.log("out of screen!!!!")    
+//     }
+// }
 
 //check if position score is higher than 0.4
 function PoseCheck() {
     if (pose) {
         if ((leftWrist.score > 0.4) && (rightWrist.score > 0.4)) {
             //check if pose within canvas
-              poseChecked = true;
+            poseChecked = true;
 
         }
         else {
@@ -184,7 +252,7 @@ function PlaybyPose() {
         else if (!poseChecked) {
             // stop sound when pose out of screen
             osc.amp(0);
-            console.log("out of screen!!!!")
+            //console.log("out of screen!!!!")
         }
     }
 
@@ -215,29 +283,64 @@ function PlaybyPose() {
     if (pose) {
         if (leftWrist.score > 0.4) {
             //check if pose within canvas
-           
+
             stroke('red');
             strokeWeight(1);
             noFill();
-            line(leftWristX,leftWristY,width,leftWristY);
+            line(leftWristX, leftWristY, width, leftWristY);
 
             fill('red');
             circle(leftWristX, leftWristY, 30);
-            if(rightWrist.score > 0.4)   { 
+
+            if (rightWrist.score > 0.4) {
                 circle(rightWristX, rightWristY, 30);
             }
         }
     }
+
 }
+
+// pose to change sound
+function newPlaybyPose(obj) {
+    console.log("NewLeft",obj.LeftX,"NewRight",obj.RightX);
+
+    //Code doesn't work;
+    fill('black')
+    rect(obj.LeftX,100,50,50);
+    //     if (pose) {
+    //         let n = floor(map(obj.RightX, 0, width, 0, 8));
+    //         let amp = map(obj.LeftY, 0, height, 1, 0);
+    
+    //             if (obj.RightX > 0 && obj.RightX < width) {
+    //                 // //console.log(n);
+    //                 osc.freq(midiToFreq(notes[n]));
+    //             }
+    //             // //amp(vol,[rampTime],[timeFromNow])fade out
+    //             if (obj.LeftY > 0 && obj.LeftY < height) {
+    //                 osc.amp(amp, 0.1);
+    //             }
+    //             //osc.amp(amp);    
+    //             else if (!poseChecked) {
+    //                 // stop sound when pose out of screen
+    //                 osc.amp(0);
+    //                 //console.log("out of screen!!!!")
+    //             }
+    //     }
+    }
 
 // We got a new stream!
 function gotStream(stream) {
     // This is just like a video/stream from createCapture(VIDEO)
     otherVideo = stream;
     //otherVideo.id is the unique identifier for this peer
-    //otherVideo.hide();
+    otherVideo.hide();
+    otherVideos[id].stream();
+    console.log("othervideoID",otherVideos[id])
 }
-function bGmusic(){
+
+
+
+function bGmusic() {
     //amplify 扩音器，调节音量
     bgGain = new Tone.Gain(0.3).toMaster();
 
