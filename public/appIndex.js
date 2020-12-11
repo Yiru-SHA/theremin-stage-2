@@ -28,7 +28,7 @@ let musics = {
 let myVideo;
 let otherVideo;
 //set id as object
-let otherVideos = {};
+//let otherVideos = {};
 let myCanvas;
 let poses = [];
 //Code by Mister Bomb
@@ -334,8 +334,8 @@ function gotStream(stream) {
     otherVideo = stream;
     //otherVideo.id is the unique identifier for this peer
     otherVideo.hide();
-    otherVideos[id].stream();
-    console.log("othervideoID",otherVideos[id])
+    // otherVideos[id].stream();
+    // console.log("othervideoID",otherVideos[id])
 }
 
 
